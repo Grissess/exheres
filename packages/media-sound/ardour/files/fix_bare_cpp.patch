@@ -1,0 +1,22 @@
+diff --git a/gtk2_ardour/wscript b/gtk2_ardour/wscript
+index 2e3ff2e6b..1eb6bea41 100644
+--- a/gtk2_ardour/wscript
++++ b/gtk2_ardour/wscript
+@@ -802,7 +802,7 @@ def build(bld):
+     if sys.platform == 'darwin':
+         menus_argv = [ '-E', '-P', '-D__APPLE__', '-' ]
+     else:
+-        menus_argv = [ '-E', '-P' ]
++        menus_argv = [ '-E', '-P', '-' ]
+ 
+     if bld.is_defined('PTFORMAT'):
+         menus_argv += [ '-DPTFORMAT' ]
+@@ -811,7 +811,7 @@ def build(bld):
+     # so that we can try them out with different program builds.
+     for program in [ 'ardour', 'trx' ]:
+         obj = bld(features = 'command-output')
+-        obj.command = 'cpp'
++        obj.command = bld.env['CXX'][0]  # XXX Fragile?
+         obj.command_is_external = True
+         obj.no_inputs = True
+         obj.argv = menus_argv

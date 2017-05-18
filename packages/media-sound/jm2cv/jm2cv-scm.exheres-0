@@ -1,0 +1,20 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SCM_REPOSITORY="http://git.fuzzle.org/jm2cv.git"
+
+require scm-git
+require cmake [ out_of_source=false ]
+
+SUMMARY="JACK MIDI to Control Values daemon"
+HOMEPAGE="http://git.fuzzle.org/cgit/jm2cv.git/"
+PLATFORMS="~x86 ~amd64"
+LICENCES="GPL-2"
+SLOT="0"
+
+DEPENDENCIES="
+    build+run:
+        media-sound/jack-audio-connection-kit[>=0.118]
+"

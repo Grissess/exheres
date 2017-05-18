@@ -1,0 +1,52 @@
+# Copyright 2009 Adriaan Leijnse <adriaan@leijnse.net>
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Distributed under the terms of the Gnu General Public License v2
+# (see licences/GPL-2::arbor in your Paludis distribution)
+
+SCM_REPOSITORY="git://git.ardour.org/ardour/ardour.git"
+
+require scm-git
+require waf [ waf_executable='python2 ./waf' ]
+
+SUMMARY="Ardour is a hard disk recorder and digital audio workstation"
+HOMEPAGE="http://ardour.org"
+
+LICENCES="GPL-2"
+SLOT="5"
+PLATFORMS="~amd64"
+MYOPTIONS=""  # TODO
+
+DEPENDENCIES="
+    build+run:
+        media-sound/jack-audio-connection-kit[>=0.116]
+        dev-libs/libxml2
+        sci-libs/fftw
+        dev-libs/glib:2[>=2.10]
+        gnome-platform/libgnomecanvas
+        media-libs/aubio[jack]
+        media-libs/liblrdf
+        media-libs/liblo
+        dev-libs/boost
+        media-libs/slv2[jack]
+        dev-libs/serd[>=0.14]
+        dev-libs/sord[>=0.8]
+        media-libs/sratom[>=0.2]
+        media-libs/lilv[>=0.14]
+        media-libs/suil[>=0.6]
+        sci-libs/fftw[>=3.3.5]
+        dev-libs/libusb:0.1
+"
+
+BUGS_TO="grissess@nexusg.org"
+
+# cxx11 is mostly to appease the embedded liblua
+
+WAF_SRC_CONFIGURE_PARAMS=(
+	--hates=sbindir
+	--hates=htmldir
+	--cxx11
+)
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    ${FILES}/fix_bare_cpp.patch
+)

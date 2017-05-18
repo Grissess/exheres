@@ -1,0 +1,80 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="Small Device C Compiler"
+HOMEPAGE="http://sdcc.sourceforge.net/"
+PLATFORMS="~x86 ~amd64"
+SLOT="3"
+MYOPTIONS="
+    ( targets:
+        mcs51 [[ description = [ Target Intel MCS-51 ] ]]
+        z80 [[ description = [ Target Zilog Z80 ] ]]
+        z180 [[ description = [ Target Zilog Z180 ] ]]
+        gbz80 [[ description = [ Target the Gameboy's Z80 ] ]]
+        r2k [[ description = [ Target Rabbit 2000 ] ]]
+        r3ka [[ description = [ Target Rabbit 3000A ] ]]
+        tlcs90 [[ description = [ Target Toshiba TLCS-90 ] ]]
+        ds390 [[ description = [ Target Dallas DS390 ] ]]
+        ds400 [[ description = [ Target Dallas DS400 ] ]]
+        hc08 [[ description = [ Target Freescale HC08 ] ]]
+        s08 [[ description = [ Target Freescale S08 ] ]]
+        stm8 [[ description = [ Target STM STM8 ] ]]
+    ) [[ number-selected = at-least-one ]]
+"
+
+LICENCES="
+    GPL-2 [[ note = [ sdcc itself ] ]]
+    GPL-3 [[ note = [ sdcpp (from GCC) and sdas/sdld (from ASXXXX) ] ]]
+    LGPL-2 [[ note = [ sdcc runtime ] ]]
+"
+#    pic14? sdcc [[ note = [ Because MT demands software using distributed headers contain a notice that it is to be used only on authentic devices ] ]]
+#    pic16? sdcc [[ note = [ Because MT demands software using distributed headers contain a notice that it is to be used only on authentic devices ] ]]
+
+DEPENDENCIES="
+    build:
+        dev-libs/boost
+"
+
+
+require sourceforge [ project=project/sdcc/sdcc/$(ever range -3) pnv=${PN}-src-${PV} ]
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-pic14-port
+    --disable-pic16-port
+    AR=${AR}
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    'targets:mcs51 mcs51-port'
+    'targets:z80 z80-port'
+    'targets:z180 z180-port'
+    'targets:gbz80 gbz80-port'
+    'targets:r2k r2k-port'
+    'targets:r3ka r3ka-port'
+    'targets:tlcs90 tlcs90-port'
+    'targets:ds390 ds390-port'
+    'targets:ds400 ds400-port'
+#    'targets:pic14 pic14-port'
+#    'targets:pic16 pic16-port'
+    'targets:hc08 hc08-port'
+    'targets:s08 s08-port'
+    'targets:stm8 stm8-port'
+)
+
+DEFAULT_SRC_COMPILE_PARAMS=(
+    -d
+)
+
+FILES_WITH_BROKEN_AR=(
+    sim/ucsim/cmd.src/Makefile.in
+    sim/ucsim/sim.src/Makefile.in
+    sim/ucsim/gui.src/Makefile.in
+    sim/ucsim/main_in.mk
+)
+
+src_prepare() {
+    default
+    edo sed -i -e 's/ar -rc \$\*\.a/$(AR) -rc $*.a/' "${FILES_WITH_BROKEN_AR[@]}"
+}
