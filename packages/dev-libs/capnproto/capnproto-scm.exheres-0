@@ -1,0 +1,49 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="The Cap'n Proto serialization and RPC libraries and binaries"
+HOMEPAGE="https://capnproto.org/"
+PLATFORMS="~x86 ~amd64 ~arm"
+SLOT="0"
+MYOPTIONS=""
+LICENCES="MIT"
+DEPENDENCIES=""
+
+require github [ user=sandstorm-io ]
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ]
+
+SOURCE_DIR="c++"
+
+src_prepare() {
+    cd "$SOURCE_DIR"
+
+    autotools_src_prepare
+}
+
+src_configure() {
+    cd "$SOURCE_DIR"
+
+    default
+}
+
+src_compile() {
+    cd "$SOURCE_DIR"
+
+    default
+}
+
+src_test() {
+    cd "$SOURCE_DIR"
+
+    esandbox disable_net
+    default
+    esandbox enable_net
+}
+
+src_install() {
+    cd "$SOURCE_DIR"
+
+    default
+}
