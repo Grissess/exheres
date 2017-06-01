@@ -1,0 +1,74 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="TI Linking Program, a program for interfacing Texas Instruments calculators"
+HOMEPAGE="http://lpg.ticalc.org/prj_tilp/"
+PLATFORMS="~x86 ~amd64"
+SLOT="1"
+MYOPTIONS="kde"
+LICENCES="GPL-2"
+DEPENDENCIES="
+    build+run:
+        dev-libs/tilibs[>=1]
+        kde? (
+            kde/kdelibs
+            kde/kde-runtime
+        )
+"
+DOWNLOADS="http://www.ticalc.org/pub/unix/tilp.tar.gz"
+RESTRICT="fetch"
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( kde )
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ]
+
+SRC_DIR="tilp2-1.18"
+
+# Intended to override the one in arbor/exlibs/autotools; that one has die instead of die_unless_nonfatal
+autotools_run_tool() {
+    illegal_in_global_scope
+
+    autotools_select_versions
+    local ret=0
+
+    echo "$@"
+    "$@"
+    ret=$?
+
+    if [[ ${ret} != 0 && ${NO_FAIL} != 1 ]]; then
+        eerror "Failed Running $1 !"
+        die_unless_nonfatal "Failed Running $1 !"
+    fi
+}
+# End shameless copying
+
+pkg_nofetch() {
+    OUTPUT="$(default)"
+
+    if [ -n "$OUTPUT" ]; then
+        echo "$OUTPUT"
+
+        echo
+        eerror "Please place the above files in ${FETCHEDDIR}."
+
+        echo
+        eerror "Visit the following website to get tilp.tar.gz: http://www.ticalc.org/archives/files/fileinfo/374/37480.html"
+
+        die_unless_nonfatal "Failed to fetch all files"
+    fi
+}
+
+src_unpack() {
+    default
+
+    edo mv "$SRC_DIR" tilp-1.6
+}
+
+src_prepare() {
+    # configure.ac has a line including AC_PATH_KDE which is not conditional on
+    # whether or not KDE is installed, so squelch the resulting spurious error
+
+    nonfatal autotools_src_prepare
+}

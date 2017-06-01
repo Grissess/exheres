@@ -1,0 +1,84 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="Libraries for TiLP, TiEmu, etc. for interfacing Texas Iinstruments calculators"
+HOMEPAGE="http://lpg.ticalc.org/prj_tilp/"
+PLATFORMS="~x86 ~amd64"
+SLOT="1"
+MYOPTIONS=""
+LICENCES="GPL-2"
+DOWNLOADS="http://www.ticalc.org/pub/unix/tilibs.tar.gz"
+RESTRICT="fetch"
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ]
+
+pkg_nofetch() {
+    OUTPUT="$(default)"
+
+    if [ -n "$OUTPUT" ]; then
+        echo "$OUTPUT"
+
+        echo
+        eerror "Please place the above files in ${FETCHEDDIR}."
+
+        echo
+        eerror "Visit the following website to get tilibs.tar.gz: http://www.ticalc.org/archives/files/fileinfo/374/37479.html"
+
+        die "Failed to fetch all files"
+    fi
+}
+
+LIBRARIES=(
+    libticables2-1.3.5
+    libticalcs2-1.1.9
+    libticonv-1.1.5
+    libtifiles2-1.1.7
+)
+
+SRC_DIR="tilibs2"
+
+src_unpack() {
+    default
+
+    mv "$SRC_DIR" tilibs-1
+    pushd "$WORK"
+
+    for libname in "${LIBRARIES[@]}"; do
+        tar xvfj ${libname}.tar.bz2
+    done
+
+    popd
+}
+
+for_each_lib() {
+    OLD_WORK="$WORK"
+
+    for libname in "${LIBRARIES[@]}"; do
+        WORK="$OLD_WORK/$libname"
+        "$@"
+    done
+
+    WORK="$OLD_WORK"
+}
+
+src_prepare() {
+    for_each_lib default
+}
+
+src_configure() {
+    for_each_lib default
+}
+
+src_compile() {
+    for_each_lib default
+}
+
+src_test() {
+    for_each_lib default
+}
+
+src_install() {
+    for_each_lib default
+}
