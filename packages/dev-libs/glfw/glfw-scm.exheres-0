@@ -1,0 +1,14 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="A modern, open-source, multi-platform library for OpenGL development on the desktop"
+HOMEPAGE="http://www.glfw.org/index.html"
+PLATFORMS="~x86 ~amd64"
+SLOT="0"
+LICENCES="ZLIB"
+DEPENDENCIES=""
+
+require github [ user=glfw project=glfw ]
+require cmake
