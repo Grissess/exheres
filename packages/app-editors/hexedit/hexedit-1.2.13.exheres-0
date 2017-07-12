@@ -1,0 +1,23 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="A small and fast hex editor for the command line"
+HOMEPAGE="http://rigaux.org/hexedit.html"
+PLATFORMS="~x86 ~amd64"
+SLOT="0"
+MYOPTIONS=""
+LICENCES="GPL-2"
+
+DOWNLOADS="http://rigaux.org/hexedit-1.2.13.src.tgz"
+
+src_unpack() {
+    default
+
+    mv hexedit ${PNV}
+}
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}/no_strip_to_install.patch"
+)
