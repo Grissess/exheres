@@ -1,0 +1,38 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SCM_REPOSITORY="https://anonscm.debian.org/git/pkg-multimedia/a2jmidid.git"
+
+require scm-git
+require waf
+
+SUMMARY="ALSA to JACK MIDI bridge"
+HOMEPAGE="http://home.gna.org/a2jmidid/"
+PLATFORMS="~x86 ~amd64"
+LICENCES="GPL-2"
+SLOT="0"
+
+DEPENDENCIES="
+    build+run:
+        media-sound/jack-audio-connection-kit[>=0.118]
+"
+
+WAF_SRC_CONFIGURE_PARAMS=(
+    --hates=bindir
+    --hates=sbindir
+    --hates=libdir
+    --hates=datadir
+    --hates=htmldir
+)
+
+src_configure() {
+    edo sed -i -e 's/conf\.check_pkg([^)]*/&, pkgbin="'${PKG_CONFIG}'"/g' wscript
+
+    LINKFLAGS="${LINKFLAGS} -pthread" waf_src_configure
+}
+
+src_test() {
+    :
+}

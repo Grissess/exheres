@@ -1,0 +1,48 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="A modern, open-source, multi-platform library for OpenGL development on the desktop"
+HOMEPAGE="http://www.glfw.org/index.html"
+PLATFORMS="~x86 ~amd64"
+SLOT="0"
+LICENCES="ZLIB"
+MYOPTIONS="
+    shared_libs [[ presumed = true description = [ Build shared libraries (.so files) for dynamic linking ] ]]
+    examples [[ description = [ Also compile and install example programs ] ]]
+    test_binaries [[ description = [ Also compile and install test programs ] ]]
+    docs
+    internal_docs [[ requires = [ docs ] description = [ Also build internal documentation (for library hackers) ] ]]
+    static_vulkan [[ description = [ Statically link against Vulkan libraries ] ]]
+    (
+        providers:
+            mir [[ description = [ Use the Mir display server ] ]]
+            osmesa [[ description = [ Use the native Mesa drivers ] ]]
+            wayland [[ description = [ Use the Wayland display server ] ]]
+    )
+"
+# TODO: Depend on Mir when that package exists
+DEPENDENCIES="
+    build+run:
+        providers:wayland? ( sys-libs/wayland sys-libs/wayland-protocols )
+"
+
+require github [ user=glfw project=glfw ]
+require cmake
+
+src_configure() {
+    local opts=""
+    
+    option shared_libs && opts+="-DBUILD_SHARED_LIBS=ON "
+    option examples && opts+="-DGLFW_BUILD_EXAMPLES=ON "
+    option test_binaries && opts+="-DGLFW_BUILD_TESTS=ON "
+    option docs && opts+="-DGLFW_BUILD_DOCS=ON "
+    option internal_docs && opts+="-DGLFW_DOCUMENT_INTERNALS=ON "
+    option static_vulkan && opts+="-DGLFW_VULKAN_STATIC=ON "
+    option providers:mir && opts+="-DGLFW_USE_MIR=ON "
+    option providers:osmesa && opts+="-DGLFW_USE_OSMESA=ON "
+    option providers:wayland && opts+="-DGLFW_USE_WAYLAND=ON "
+
+    ecmake ${opts}
+}

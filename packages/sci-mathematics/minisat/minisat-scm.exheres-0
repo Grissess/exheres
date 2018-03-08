@@ -1,0 +1,35 @@
+# Copyright 2017 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="Minisat Solver"
+HOMEPAGE="http://minisat.se/"
+PLATFORMS="~x86 ~amd64"
+SLOT="0"
+MYOPTIONS=""
+LICENCES="MIT"
+
+require github [ user=niklasso project=minisat ]
+
+pkg_setup() {
+
+    # These kludges *might* be from callous handling of prefix...but this works
+    # for now. Suggestions welcome!
+
+    exdirectory --allow /usr/local/include/minisat/mtl
+    exdirectory --allow /usr/local/include/minisat/utils
+    exdirectory --allow /usr/local/include/minisat/core
+    exdirectory --allow /usr/local/include/minisat/simp
+
+    exdirectory --allow /usr/local/bin
+
+    exdirectory --allow /usr/local/lib
+
+    default
+}
+
+src_configure() {
+    #emake config prefix="/usr/host"
+    default
+}

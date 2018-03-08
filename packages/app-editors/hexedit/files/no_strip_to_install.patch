@@ -1,0 +1,11 @@
+diff -u a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2017-07-11 23:27:57.783495978 -0400
++++ b/Makefile.in	2017-07-11 23:28:22.892660378 -0400
+@@ -42,6 +42,6 @@
+ 
+ install: $(PRODUCT)
+ 	$(INSTALL) -d -m 755 $(DESTDIR)$(bindir)
+-	$(INSTALL) -s -m 755 $(PRODUCT) $(DESTDIR)$(bindir)
++	$(INSTALL) -m 755 $(PRODUCT) $(DESTDIR)$(bindir)
+ 	$(INSTALL) -d -m 755 $(DESTDIR)$(mandir)/man1
+ 	$(INSTALL) -m 644 $(PRODUCT).1 $(DESTDIR)$(mandir)/man1
