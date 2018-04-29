@@ -1,0 +1,31 @@
+# Copyright 2018 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="A free, open-source tool for programming amateur radios"
+HOMEPAGE="https://chirp.danplanet.com"
+DOWNLOADS="https://trac.chirp.danplanet.com/chirp_daily/LATEST/chirp-daily-${PV}.tar.gz"
+WORK="${WORKBASE}/chirp-daily-${PV}"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+    build+run:
+        dev-libs/libxml2[python_abis:2.7]
+        dev-python/pyserial[python_abis:2.7]
+"
+
+BUGS_TO="grissess@nexusg.org"
+
+require setup-py [ import=distutils blacklist="3" multibuild=false ]
+
+src_install() {
+    python2.7 setup.py install --root "${IMAGE}" --prefix "/usr/$(exhost --target)"
+
+    keepdir /usr/$(exhost --target)/share/chirp/images
+}
