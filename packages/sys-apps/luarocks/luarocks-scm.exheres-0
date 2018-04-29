@@ -1,0 +1,24 @@
+# Copyright 2018 Graham Northup <grissess@nexusg.org>
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+SUMMARY="A Lua package manager"
+HOMEPAGE="https://luarocks.org"
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/lua
+"
+
+BUGS_TO="grissess@nexusg.org"
+
+require github
+
+src_configure() {
+    ./configure --prefix=/usr/$(exhost --target) --sysconfdir=/etc/luarocks
+}
