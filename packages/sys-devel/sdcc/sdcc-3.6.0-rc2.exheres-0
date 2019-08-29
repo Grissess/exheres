@@ -1,7 +1,5 @@
-# Copyright 2017 Graham Northup <grissess@nexusg.org>
-# Permission to use, copy, modify, and/or distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
+# Copyright 2019 Graham Northup <grissess@nexusg.org>
+# Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Small Device C Compiler"
 HOMEPAGE="http://sdcc.sourceforge.net/"
